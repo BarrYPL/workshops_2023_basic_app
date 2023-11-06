@@ -45,3 +45,10 @@ group :test do
   gem 'selenium-webdriver'
   gem 'webdrivers'
 end
+
+gem "a9n", "~> 1.5"
+
+gem "omniauth-google-oauth2", "~> 1.1"
+
+gem "omniauth-rails_csrf_protection", "~> 1.0"
+gem 'google-api-client', require: 'google/apis/calendar_v3'
