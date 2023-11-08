@@ -5,8 +5,11 @@ class BookLoansController < ApplicationController
   def create
     respond_to do |format|
       if @book_loan.save
+        ::Publishers::LoanBookPublisher.new(book).publish
         format.html { redirect_to book_url(book), notice: flash_notice }
         format.json { render :show, status: :created, location: @book_loan }
+        LoanCreatedAsyncJob.perform_async(@book_loan.id)
+        ExpirationDateNotificationJob.perform_at(@book_loan.due_date - 1.day, @book_loan.id)
         #I don't want to be notified about this event in development
         #notice_calendar
       else
